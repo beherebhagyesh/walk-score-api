@@ -92,10 +92,12 @@
     <div class="bg-glow blob-1 animate-float"></div>
     <div class="bg-glow blob-2 animate-float" style="animation-delay: -3s;"></div>
     <div class="grid-overlay"></div>
+    <Analytics />
   </main>
 </template>
 
 <script setup>
+import { Analytics } from '@vercel/analytics/nuxt'
 const currentLocation = ref({ lat: 28.3722, lon: -81.2737 })
 
 const { data, pending, error, refresh } = await useFetch('/api/walkscore', {
