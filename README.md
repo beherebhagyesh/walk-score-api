@@ -29,9 +29,10 @@ A premium **Nuxt 4** application that displays walkability, bikeability, and tra
 
 - 🎨 **Premium Dark UI** - "Midnight & Neon" theme with glassmorphism
 - 📊 **Animated Score Cards** - Numbers count up with smooth easing
+- 📈 **Real-time Comparisons** - Card-face footer showing City Average with % difference (Up/Down)
 - 🚌 **Nearby Connectivity** - Real-time transit routes and distance metrics
 - 📍 **Location Presets** - Specific coordinates for key neighborhoods
-- 🏢 **City Comparisons** - Local and State level average comparisons
+- 🏢 **City Comparisons** - Local and State level average comparisons in modal
 - 📱 **Responsive Design** - Works on all screen sizes
 - 🚀 **Nuxt 4** - Latest framework with app directory structure
 
@@ -218,6 +219,23 @@ export default defineNuxtConfig({
 - [ ] **Trend Charts** - D3.js or Chart.js integration
 - [ ] **Heatmaps** - Neighborhood walkability visualization
 - [ ] **Comparisons** - City vs city analytics
+
+---
+
+## 📜 Version History
+
+### [v1.3.0] - 2026-01-19
+- **Enhanced Score Cards**: Added real-time city average comparisons directly to the card footer.
+- **Dynamic % Indicators**: Implemented color-coded percentage difference (Green Up / Red Down) relative to city averages.
+- **Updated Iconography**: Switched to `material-symbols` (Walking, Bike, Car) for better visual clarity.
+- **Refined Detail Modal**: Integrated real-time comparison data into the expanded view.
+
+### [v1.2.0] - 2026-01-18
+- **Nearby Connectivity**: Added transit routes and distance metrics.
+- **Location Presets**: Added quick-pick buttons for common neighborhoods.
+
+### [v1.1.0] - 2026-01-15
+- **Initial Release**: Basic Walk Score integration with premium UI.
 
 ---
 

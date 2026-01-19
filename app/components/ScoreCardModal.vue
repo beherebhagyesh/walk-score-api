@@ -38,23 +38,13 @@
                 </div>
               </div>
               
-              <div class="bar-item">
+              <div v-for="comp in comparisons" :key="comp.label" class="bar-item">
                 <div class="bar-label">
-                  <span>{{ cityName }} Average</span>
-                  <span class="bar-value">{{ cityAverage }}</span>
+                  <span>{{ comp.label }}</span>
+                  <span class="bar-value">{{ comp.value }}</span>
                 </div>
                 <div class="bar-track">
-                  <div class="bar-fill city" :style="{ width: cityAverage + '%' }"></div>
-                </div>
-              </div>
-              
-              <div class="bar-item">
-                <div class="bar-label">
-                  <span>{{ stateName }} Average</span>
-                  <span class="bar-value">{{ stateAverage }}</span>
-                </div>
-                <div class="bar-track">
-                  <div class="bar-fill state" :style="{ width: stateAverage + '%' }"></div>
+                  <div class="bar-fill city" :style="{ width: comp.value + '%' }"></div>
                 </div>
               </div>
             </div>
@@ -103,6 +93,10 @@ const props = defineProps({
   transitStops: {
     type: Array,
     default: () => []
+  },
+  comparisons: {
+    type: Array,
+    default: () => []
   }
 })
 
@@ -128,21 +122,6 @@ const stateName = computed(() => {
     'NY': 'New York'
   };
   return states[stateCode] || stateCode;
-})
-
-const cityAverage = computed(() => {
-  // Use a heuristic based on the location
-  const seed = (props.locationName?.length || 0) * 7;
-  if (props.type === 'walk') return 40 + (seed % 20);
-  if (props.type === 'bike') return 50 + (seed % 15);
-  return 30 + (seed % 25);
-})
-
-const stateAverage = computed(() => {
-  const seed = (props.locationName?.length || 0) * 3;
-  if (props.type === 'walk') return 35 + (seed % 15);
-  if (props.type === 'bike') return 45 + (seed % 10);
-  return 25 + (seed % 20);
 })
 
 const scoreColor = computed(() => {

@@ -45,6 +45,18 @@
         <Icon name="heroicons:information-circle" size="14" />
         <span>{{ summary }}</span>
       </div>
+
+      <!-- Comparison Section -->
+      <div v-if="comparisons.length > 0" class="comparison-footer">
+        <div v-for="comp in comparisons" :key="comp.label" class="comparison-row">
+          <span class="comp-label">{{ comp.label }}</span>
+          <span class="comp-value">{{ comp.value }}</span>
+          <div v-if="calculateDiff(comp.value)" class="comp-diff" :class="calculateDiff(comp.value).isUp ? 'is-positive' : 'is-negative'">
+            <span>{{ calculateDiff(comp.value).percent }}%</span>
+            <Icon :name="calculateDiff(comp.value).isUp ? 'heroicons:arrow-trending-up' : 'heroicons:arrow-trending-down'" size="14" />
+          </div>
+        </div>
+      </div>
       
       <div class="click-hint">
         <Icon name="heroicons:cursor-arrow-rays" size="14" />
@@ -61,7 +73,11 @@ const props = defineProps({
   description: String,
   iconName: String,
   summary: String,
-  type: String
+  type: String,
+  comparisons: {
+    type: Array,
+    default: () => [] // Array of { label: String, value: Number }
+  }
 })
 
 const emit = defineEmits(['click'])
@@ -71,12 +87,22 @@ const handleClick = () => {
     label: props.label,
     score: props.score,
     type: props.type,
-    iconName: props.iconName
+    iconName: props.iconName,
+    comparisons: props.comparisons
   })
 }
 
 const isLoaded = ref(false)
 const animatedScore = ref(0)
+
+const calculateDiff = (avg) => {
+  if (!props.score || !avg) return null
+  const diff = ((props.score - avg) / avg) * 100
+  return {
+    percent: Math.abs(Math.round(diff)),
+    isUp: props.score >= avg
+  }
+}
 
 const scoreClass = computed(() => {
   if (props.score >= 70) return 'score-high';
@@ -343,6 +369,59 @@ onMounted(() => {
 
 .score-card {
   cursor: pointer;
+}
+
+.comparison-footer {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.comparison-row {
+  display: grid;
+  grid-template-columns: 1fr auto 65px;
+  align-items: center;
+  gap: 1rem;
+}
+
+.comp-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  opacity: 0.8;
+}
+
+.comp-value {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 700;
+  min-width: 24px;
+  text-align: right;
+}
+
+.comp-diff {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+.comp-diff.is-positive {
+  color: var(--success);
+  background: rgba(63, 185, 80, 0.1);
+}
+
+.comp-diff.is-negative {
+  color: var(--danger);
+  background: rgba(248, 81, 73, 0.1);
 }
 </style>
 
