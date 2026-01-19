@@ -92,7 +92,7 @@
 </template>
 
 <script setup>
-const currentLocation = ref({ lat: 28.3672, lon: -81.2803 })
+const currentLocation = ref({ lat: 28.3722, lon: -81.2737 })
 
 const { data, pending, error, refresh } = await useFetch('/api/walkscore', {
   query: computed(() => ({
@@ -103,15 +103,22 @@ const { data, pending, error, refresh } = await useFetch('/api/walkscore', {
 })
 
 const locationName = computed(() => {
-  if (!data.value) return 'Orlando, Florida';
+  if (!data.value) return 'Selected Location';
   const lat = data.value.snapped_lat || currentLocation.value.lat;
   const lon = data.value.snapped_lon || currentLocation.value.lon;
   
-  // Simple heuristic for location name
+  // Precise matching for our presets
+  if (lat === 28.3722 && lon === -81.2737) return 'Lake Nona South, FL';
+  if (lat === 33.1423 && lon === -97.1176) return 'River Oaks, TX';
+  if (lat === 29.4401 && lon === -98.4611) return 'Government Hill, TX';
+  if (lat === 34.1896 && lon === -118.3904) return 'North Hollywood, CA';
+  if (lat === 40.4535 && lon === -79.9323) return 'Shadyside, PA';
+  
+  // Heuristics for other areas
   if (lat > 40 && lon < -73) return 'New York Area';
   if (lat > 37 && lat < 38 && lon < -122) return 'San Francisco Area';
   if (lat > 25 && lat < 26 && lon < -80) return 'Miami Area';
-  return 'Orlando, Florida';
+  return 'Custom Location';
 })
 
 const handleLocationUpdate = async (location) => {

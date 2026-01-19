@@ -27,6 +27,12 @@
         @click="handleCardClick"
       />
     </div>
+
+    <!-- Nearby Connectivity Section -->
+    <NearbyTransit 
+      :stops="transitStops" 
+      :loading="loadingTransit"
+    />
     
     <!-- Modal for score details -->
     <ScoreCardModal
@@ -50,22 +56,31 @@ const props = defineProps({
 const modalOpen = ref(false)
 const selectedCard = ref(null)
 const transitStops = ref([])
+const loadingTransit = ref(false)
 
-const handleCardClick = async (cardData) => {
+const fetchTransitStops = async () => {
+  if (!props.location?.lat || !props.location?.lon) return
+  
+  loadingTransit.value = true
+  try {
+    const lat = props.location.lat
+    const lon = props.location.lon
+    const response = await $fetch(`/api/transit-stops?lat=${lat}&lon=${lon}`)
+    transitStops.value = response.stops || []
+  } catch (e) {
+    console.error('Failed to fetch transit stops:', e)
+    transitStops.value = []
+  } finally {
+    loadingTransit.value = false
+  }
+}
+
+// Fetch transit stops whenever location changes
+watch(() => props.location, fetchTransitStops, { immediate: true, deep: true })
+
+const handleCardClick = (cardData) => {
   selectedCard.value = cardData
   modalOpen.value = true
-  
-  // Fetch transit stops if it's a transit card
-  if (cardData.type === 'transit') {
-    try {
-      const lat = props.location?.lat || 28.3672
-      const lon = props.location?.lon || -81.2803
-      const response = await $fetch(`/api/transit-stops?lat=${lat}&lon=${lon}`)
-      transitStops.value = response.stops || []
-    } catch (e) {
-      console.error('Failed to fetch transit stops:', e)
-    }
-  }
 }
 
 const closeModal = () => {

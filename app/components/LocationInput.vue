@@ -59,11 +59,11 @@ const longitude = ref('-81.2803')
 const loading = ref(false)
 
 const presets = [
-  { name: 'Lake Nona', lat: 28.3672, lon: -81.2803 },
-  { name: 'Downtown Orlando', lat: 28.5383, lon: -81.3792 },
-  { name: 'New York City', lat: 40.7128, lon: -74.0060 },
-  { name: 'San Francisco', lat: 37.7749, lon: -122.4194 },
-  { name: 'Miami', lat: 25.7617, lon: -80.1918 }
+  { name: 'Lake Nona South', lat: 28.3722, lon: -81.2737 },
+  { name: 'River Oaks', lat: 33.1423, lon: -97.1176 },
+  { name: 'Government Hill', lat: 29.4401, lon: -98.4611 },
+  { name: 'North Hollywood', lat: 34.1896, lon: -118.3904 },
+  { name: 'Shadyside', lat: 40.4535, lon: -79.9323 }
 ]
 
 const updateLocation = async () => {
