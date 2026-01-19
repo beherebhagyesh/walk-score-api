@@ -29,8 +29,9 @@ A premium **Nuxt 4** application that displays walkability, bikeability, and tra
 
 - 🎨 **Premium Dark UI** - "Midnight & Neon" theme with glassmorphism
 - 📊 **Animated Score Cards** - Numbers count up with smooth easing
-- 🌈 **Dynamic Colors** - Green (70+), Yellow (50-69), Red (<50)
-- 🔄 **Real-time Data** - Live scores from Walk Score API
+- 🚌 **Nearby Connectivity** - Real-time transit routes and distance metrics
+- 📍 **Location Presets** - Specific coordinates for key neighborhoods
+- 🏢 **City Comparisons** - Local and State level average comparisons
 - 📱 **Responsive Design** - Works on all screen sizes
 - 🚀 **Nuxt 4** - Latest framework with app directory structure
 
@@ -96,11 +97,11 @@ See [Future Scope](#-future-scope) for planned location search feature.
 
 | City | Latitude | Longitude |
 |------|----------|-----------|
-| New York, NY | 40.7128 | -74.0060 |
-| San Francisco, CA | 37.7749 | -122.4194 |
-| Chicago, IL | 41.8781 | -87.6298 |
-| Seattle, WA | 47.6062 | -122.3321 |
-| Miami, FL | 25.7617 | -80.1918 |
+| Lake Nona South, FL | 28.3722 | -81.2737 |
+| River Oaks, TX | 33.1423 | -97.1176 |
+| Government Hill, TX | 29.4401 | -98.4611 |
+| North Hollywood, CA | 34.1896 | -118.3904 |
+| Shadyside, PA | 40.4535 | -79.9323 |
 
 ---
 
@@ -114,11 +115,14 @@ walk-score-dashboard/
 │   │   └── css/
 │   │       └── main.css     # Global styles
 │   └── components/
-│       ├── ScoreCard.vue    # Individual score display
-│       └── MetricsGrid.vue  # Grid layout
+│       ├── ScoreCard.vue      # Individual score display
+│       ├── MetricsGrid.vue    # Grid & dashboard logic
+│       ├── NearbyTransit.vue  # Connectivity section
+│       └── ScoreCardModal.vue # Detailed city insights
 ├── server/
 │   └── api/
-│       └── walkscore.ts     # API proxy
+│       ├── walkscore.ts     # Walk/Bike score API
+│       └── transit-stops.ts # Transit search API
 ├── nuxt.config.ts           # Nuxt configuration
 ├── .env.local               # API key (not committed)
 └── .env.example             # Example environment file

@@ -37,7 +37,11 @@
           <span>Coordinates: {{ currentLocation.lat.toFixed(4) }}°N, {{ Math.abs(currentLocation.lon).toFixed(4) }}°W</span>
         </div>
         
-        <MetricsGrid :data="data" :location="currentLocation" />
+        <MetricsGrid 
+          :data="data" 
+          :location="currentLocation" 
+          :location-name="locationName"
+        />
         
         <div class="info-cards">
           <div class="info-card glass">

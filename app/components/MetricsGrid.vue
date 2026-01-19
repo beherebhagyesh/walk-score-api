@@ -41,6 +41,7 @@
       :score="selectedCard?.score"
       :type="selectedCard?.type"
       :icon-name="selectedCard?.iconName"
+      :location-name="locationName"
       :transit-stops="transitStops"
       @close="closeModal"
     />
@@ -50,7 +51,8 @@
 <script setup>
 const props = defineProps({
   data: Object,
-  location: Object
+  location: Object,
+  locationName: String
 })
 
 const modalOpen = ref(false)

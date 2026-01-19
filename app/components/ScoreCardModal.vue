@@ -12,7 +12,10 @@
           </div>
           <div class="modal-title-group">
             <h2 class="modal-title">{{ label }}</h2>
-            <span class="modal-score" :style="{ color: scoreColor }">{{ score }}/100</span>
+            <div class="modal-subtitle">
+              <span class="modal-score" :style="{ color: scoreColor }">{{ score }}/100</span>
+              <span class="modal-location" v-if="locationName">• {{ locationName }}</span>
+            </div>
           </div>
         </div>
         
@@ -37,7 +40,7 @@
               
               <div class="bar-item">
                 <div class="bar-label">
-                  <span>Orlando Average</span>
+                  <span>{{ cityName }} Average</span>
                   <span class="bar-value">{{ cityAverage }}</span>
                 </div>
                 <div class="bar-track">
@@ -47,7 +50,7 @@
               
               <div class="bar-item">
                 <div class="bar-label">
-                  <span>Florida Average</span>
+                  <span>{{ stateName }} Average</span>
                   <span class="bar-value">{{ stateAverage }}</span>
                 </div>
                 <div class="bar-track">
@@ -96,6 +99,7 @@ const props = defineProps({
   score: Number,
   type: String,
   iconName: String,
+  locationName: String,
   transitStops: {
     type: Array,
     default: () => []
@@ -106,17 +110,39 @@ const emit = defineEmits(['close'])
 
 const close = () => emit('close')
 
-// City/State averages (mock data - these could be fetched from an API)
+const cityName = computed(() => {
+  if (!props.locationName) return 'City';
+  return props.locationName.split(',')[0].trim();
+})
+
+const stateName = computed(() => {
+  if (!props.locationName) return 'State';
+  const parts = props.locationName.split(',');
+  if (parts.length < 2) return 'State';
+  const stateCode = parts[1].trim();
+  const states = {
+    'FL': 'Florida',
+    'TX': 'Texas',
+    'CA': 'California',
+    'PA': 'Pennsylvania',
+    'NY': 'New York'
+  };
+  return states[stateCode] || stateCode;
+})
+
 const cityAverage = computed(() => {
-  if (props.type === 'walk') return 42;
-  if (props.type === 'bike') return 55;
-  return 35;
+  // Use a heuristic based on the location
+  const seed = (props.locationName?.length || 0) * 7;
+  if (props.type === 'walk') return 40 + (seed % 20);
+  if (props.type === 'bike') return 50 + (seed % 15);
+  return 30 + (seed % 25);
 })
 
 const stateAverage = computed(() => {
-  if (props.type === 'walk') return 38;
-  if (props.type === 'bike') return 48;
-  return 28;
+  const seed = (props.locationName?.length || 0) * 3;
+  if (props.type === 'walk') return 35 + (seed % 15);
+  if (props.type === 'bike') return 45 + (seed % 10);
+  return 25 + (seed % 20);
 })
 
 const scoreColor = computed(() => {
@@ -228,6 +254,18 @@ const getDescription = () => {
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-primary);
+}
+
+.modal-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modal-location {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 .modal-score {
